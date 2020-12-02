@@ -12,10 +12,13 @@ namespace PixelSurvivalGame
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        //float scale = 0.1f;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
+            
+            _graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -26,6 +29,7 @@ namespace PixelSurvivalGame
 
             playerPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2,
             _graphics.PreferredBackBufferHeight / 2);
+            
             playerSpeed = 100f;
 
             base.Initialize();
@@ -48,16 +52,16 @@ namespace PixelSurvivalGame
 
             var kstate = Keyboard.GetState();
 
-            if (kstate.IsKeyDown(Keys.Up))
+            if (kstate.IsKeyDown(Keys.W))
                 playerPosition.Y -= playerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (kstate.IsKeyDown(Keys.Down))
+            if (kstate.IsKeyDown(Keys.S))
                 playerPosition.Y += playerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (kstate.IsKeyDown(Keys.Left))
+            if (kstate.IsKeyDown(Keys.A))
                 playerPosition.X -= playerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (kstate.IsKeyDown(Keys.Right))
+            if (kstate.IsKeyDown(Keys.D))
                 playerPosition.X += playerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (playerPosition.X > _graphics.PreferredBackBufferWidth - playerTexture.Width / 2)
@@ -79,7 +83,8 @@ namespace PixelSurvivalGame
 
             // TODO: Add your drawing code here
 
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
+
             _spriteBatch.Draw(
                 playerTexture, 
                 playerPosition,
