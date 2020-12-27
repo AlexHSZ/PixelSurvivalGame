@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pixel_Survival_Game;
+using System;
 
 namespace PixelSurvivalGame
 {

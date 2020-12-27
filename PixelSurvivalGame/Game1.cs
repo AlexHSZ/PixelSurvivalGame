@@ -1,36 +1,43 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
-namespace PixelSurvivalGame
+namespace Pixel_Survival_Game
 {
     public class Game1 : Game
     {
+
         Texture2D playerTexture;
         Vector2 playerPosition;
         float playerSpeed;
 
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        //float scale = 0.1f;
+        private MouseState mouseState;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
-            
-            _graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+           
         }
 
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
 
-            playerPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2,
-            _graphics.PreferredBackBufferHeight / 2);
-            
-            playerSpeed = 100f;
+            playerPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
+            playerSpeed = 250f;
+
+            _graphics.PreferredBackBufferWidth = _graphics.GraphicsDevice.DisplayMode.Width;
+            _graphics.PreferredBackBufferHeight = _graphics.GraphicsDevice.DisplayMode.Height;
+
+            _graphics.IsFullScreen = true;
+
+            _graphics.ApplyChanges();
 
             base.Initialize();
         }
@@ -38,13 +45,21 @@ namespace PixelSurvivalGame
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
             playerTexture = Content.Load<Texture2D>("Player");
+            // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
         {
+
+            mouseState = Mouse.GetState();
+
+            int x = mouseState.X, y = mouseState.Y;
+            //if (playerPosition.Contains(x, y))
+            //{
+            //    Console.WriteLine("Inside");
+            //}
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
@@ -74,6 +89,8 @@ namespace PixelSurvivalGame
             else if (playerPosition.Y < playerTexture.Height / 2)
                 playerPosition.Y = playerTexture.Height / 2;
 
+            // TODO: Add your update logic here
+
             base.Update(gameTime);
         }
 
@@ -82,21 +99,20 @@ namespace PixelSurvivalGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
 
             _spriteBatch.Draw(
-                playerTexture, 
+                playerTexture,
                 playerPosition,
                 null,
                 Color.White,
                 0f,
-                new Vector2(playerTexture.Width / 2, playerTexture.Height / 2),
-                Vector2.One,
+                new Vector2((playerTexture.Width / 2), (playerTexture.Height / 2)),
+                1.5f,
                 SpriteEffects.None,
-                0f);
+                0f
+            );
             _spriteBatch.End();
-
             base.Draw(gameTime);
         }
     }
